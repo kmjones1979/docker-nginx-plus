@@ -6,8 +6,9 @@ RUN yum install -y wget
 
 # Download certificate and key from the customer portal https://cs.nginx.com
 # # and copy to the build context
-ADD /etc/ssl/nginx/nginx-repo.crt /etc/ssl/nginx/
-ADD /etc/ssl/nginx/nginx-repo.key /etc/ssl/nginx/
+RUN mkdir -p /etc/ssl/nginx
+COPY etc/ssl/nginx/nginx-repo.crt /etc/ssl/nginx/nginx-repo.crt
+COPY etc/ssl/nginx/nginx-repo.key /etc/ssl/nginx/nginx-repo.key
 
 # Get other files required for installation
 RUN wget -q -O /etc/ssl/nginx/CA.crt https://cs.nginx.com/static/files/CA.crt
@@ -28,7 +29,7 @@ CMD chown nginx /var/spool/nginx/cache
 
 # copy /etc/nginx directory and /usr/share/nginx/html directory
 COPY etc/nginx /etc/nginx
-COPY usr/share/nginx/html /usr/share/nginx/html
+COPY usr/share/nginx/html/ /usr/share/nginx/html
 
 EXPOSE 80 9000 443
 
